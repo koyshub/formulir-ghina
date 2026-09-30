@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FF5C86">
+  <meta name="description" content="Formulir data akad & sungkeman untuk pembuatan rundown oleh GHINA MC EVENTS.">
+  <title>List Akad &amp; Sungkeman · GHINA MC EVENTS</title>
+  <link rel="icon" href="aset/ikon-192.png">
+  <link rel="apple-touch-icon" href="aset/ikon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/gaya.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-kilau" aria-hidden="true"></div>
+    <div class="hero-isi">
+      <img class="hero-logo" src="aset/logo-bulat.png" alt="Logo GHINA MC EVENTS" width="88" height="88">
+      <p class="hero-merek">GHINA MC EVENTS</p>
+      <p class="hero-basmalah" aria-hidden="true">﷽</p>
+      <h1>List Akad <span>&amp;</span> Sungkeman</h1>
+      <p class="hero-sapa">Assalamualaikum, Kak 🙏 Mohon bantuannya mengisi data di bawah untuk pembuatan rundown acara. Isian tersimpan otomatis di HP ini, jadi aman kalau terputus.</p>
+      <a class="hero-ig" id="tautanIg" href="https://instagram.com/ghinadz_mc" target="_blank" rel="noopener">@ghinadz_mc</a>
+    </div>
+  </header>
+
+  <nav class="langkah" id="langkah" aria-label="Bagian formulir"></nav>
+
+  <main id="formulir" class="formulir" novalidate></main>
+
+  <p class="catatan-privasi">🔒 Data hanya diolah di HP Kakak dan dikirim langsung lewat WhatsApp. Tidak disimpan di server mana pun.</p>
+
+  <div class="bar-kirim">
+    <div class="bar-status">
+      <div class="bar-garis"><span id="barIsi"></span></div>
+      <span id="ringkas">Belum ada isian</span>
+    </div>
+    <button type="button" id="tombolSelesai" class="tombol utama">Selesai &amp; Kirim</button>
+  </div>
+
+  <div class="lapisan" id="lapisanSelesai" hidden>
+    <section class="lembar" role="dialog" aria-modal="true" aria-labelledby="judulSelesai">
+      <div class="lembar-cek" aria-hidden="true">
+        <svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg>
+      </div>
+      <h2 id="judulSelesai">Terima kasih, Kak!</h2>
+      <p class="lembar-teks" id="teksSelesai">Data sudah jadi PDF. Tinggal kirim ke WhatsApp Ghina ya.</p>
+      <button type="button" class="tombol utama besar" id="tombolKirimPdf">
+        <span class="ikon-wa" aria-hidden="true"></span> Kirim PDF ke WhatsApp
+      </button>
+      <p class="petunjuk-kecil" id="petunjukBagikan">Pilih <b>WhatsApp</b>, lalu pilih chat <b>Ghina</b>.</p>
+      <button type="button" class="tombol garis" id="tombolKirimTeks">Kirim sebagai pesan teks</button>
+      <button type="button" class="tombol garis" id="tombolUnduh">Unduh PDF</button>
+      <button type="button" class="tombol teks" id="tombolUbah">Ubah data lagi</button>
+    </section>
+  </div>
+
+  <div class="memuat" id="memuat" hidden><span></span>Menyiapkan PDF…</div>
+
+  <noscript><p class="catatan-privasi">Formulir ini butuh JavaScript. Mohon buka lewat Chrome atau Safari.</p></noscript>
+
+  <script src="vendor/pdf-lib.min.js"></script>
+  <script src="vendor/fontkit.umd.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/teks.js"></script>
+  <script src="js/pdf.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

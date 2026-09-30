@@ -1,0 +1,14 @@
+<!doctype html>
+<!-- Pratinjau ukuran HP untuk dicek di laptop: buka lewat server lokal. -->
+<meta charset="utf-8">
+<title>Pratinjau HP</title>
+<style>
+  body { margin: 0; background: #ddd; }
+  iframe { border: 0; display: block; background: #fff; }
+</style>
+<iframe id="hp" width="390" height="2400"></iframe>
+<script>
+  const q = new URLSearchParams(location.search);
+  document.getElementById('hp').src = '/' + (q.get('src') || '?wa=081298765432');
+  document.getElementById('hp').height = q.get('h') || 2400;
+</script>
