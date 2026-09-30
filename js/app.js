@@ -58,7 +58,10 @@
   let nomorId = 0;
   function isian(f) {
     const id = 'i' + (++nomorId);
-    const bungkus = el('div', { class: 'isian' + (f.lebar === 'setengah' ? ' setengah' : ''), 'data-kunci': f.k });
+    const bungkus = el('div', {
+      class: 'isian' + (f.lebar === 'setengah' ? ' setengah' : '') + (f.jenis ? ' jenis-' + f.jenis : ''),
+      'data-kunci': f.k,
+    });
     const label = el('label', { for: id, text: f.label });
     if (f.wajib) label.append(el('span', { class: 'wajib', text: '*', 'aria-hidden': 'true' }));
 
@@ -122,7 +125,6 @@
 
   // ----- susun halaman ------------------------------------------------------
   const wadah = document.getElementById('formulir');
-  const langkah = document.getElementById('langkah');
   F.BAGIAN.forEach((b, i) => {
     const grid = el('div', { class: 'grid' });
     b.isian.forEach((f) => grid.append(isian(f)));
@@ -134,7 +136,6 @@
           el('p', { class: 'kartu-sub', text: b.keterangan })),
         el('span', { class: 'kartu-nomor', text: (i + 1) + '/' + F.BAGIAN.length })),
       grid));
-    langkah.append(el('a', { href: '#bagian-' + b.id, 'data-bagian': b.id, text: b.ikon + ' ' + b.judul }));
   });
   if (window.CONFIG && window.CONFIG.instagram) {
     const ig = document.getElementById('tautanIg');
@@ -152,14 +153,6 @@
     document.getElementById('ringkas').textContent = wajibTerisi < semuaWajib.length
       ? `${terisi} dari ${semua.length} terisi · ${semuaWajib.length - wajibTerisi} wajib belum`
       : `${terisi} dari ${semua.length} terisi · siap dikirim`;
-    for (const b of F.BAGIAN) {
-      const a = langkah.querySelector(`[data-bagian="${b.id}"]`);
-      const wajib = b.isian.filter((f) => f.wajib);
-      const lengkap = wajib.length
-        ? wajib.every((f) => ambil(f.k).trim())
-        : b.isian.some((f) => ambil(f.k).trim());
-      a.classList.toggle('lengkap', lengkap);
-    }
   }
   perbaruiStatus();
 

@@ -87,44 +87,22 @@ body {
   font-size: 13px;
 }
 
-/* ---------- Langkah ---------- */
-.langkah {
-  position: sticky; top: 0; z-index: 5;
-  display: flex; gap: 8px;
-  overflow-x: auto;
-  padding: 12px 16px;
-  margin-top: -26px;
-  scrollbar-width: none;
-}
-.langkah::-webkit-scrollbar { display: none; }
-.langkah a {
-  flex: 0 0 auto;
-  display: inline-flex; align-items: center; gap: 6px;
-  text-decoration: none;
-  color: var(--mawar-tua);
-  background: rgba(255,255,255,.92);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--garis);
-  box-shadow: 0 4px 14px rgba(214, 51, 108, .10);
-  padding: 7px 12px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-.langkah a.lengkap { background: #fff; border-color: #bfe8cf; color: #13743b; }
-.langkah a.lengkap::after { content: '✓'; font-weight: 800; }
-
 /* ---------- Formulir ---------- */
-.formulir { max-width: 640px; margin: 4px auto 0; padding: 0 16px; }
+/* Kartu pertama sedikit menumpuk ke kepala halaman supaya menyatu. */
+.formulir {
+  position: relative;
+  max-width: 640px;
+  margin: -34px auto 0;
+  padding: 0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
+}
 
 .kartu {
   background: var(--kartu);
   border-radius: var(--bulat);
   box-shadow: var(--bayang);
   padding: 20px 18px 8px;
-  margin: 16px 0;
-  scroll-margin-top: 70px;
+  margin: 0 0 16px;
+  scroll-margin-top: 16px;
   animation: muncul .5s ease-out both;
 }
 .kartu-kepala { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
@@ -302,6 +280,61 @@ input:focus, textarea:focus {
 }
 
 .catatan-privasi { max-width: 640px; margin: 8px auto 0; padding: 0 20px; text-align: center; color: var(--redup); font-size: 12.5px; }
+
+/* ---------- Responsif ---------- */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+.tombol { white-space: nowrap; }
+.bar-kirim {
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+}
+.bar-kirim .tombol { flex: 0 0 auto; }
+/* Layar pendek (HP mendatar): lembar selesai tetap bisa digulir. */
+.lembar { max-height: 92vh; max-height: 92dvh; overflow-y: auto; }
+
+/* HP kecil: isian berdampingan dijadikan satu kolom, kecuali angka. */
+@media (max-width: 400px) {
+  .isian.setengah { grid-column: 1 / -1; }
+  .isian.setengah.jenis-angka { grid-column: auto; }
+  .hero { padding: 34px 16px 58px; border-radius: 0 0 28px 28px; }
+  .hero-logo { width: 72px; height: 72px; border-radius: 20px; }
+  .hero-sapa { font-size: 14px; }
+  .kartu { padding: 18px 14px 6px; border-radius: 18px; }
+  .kartu-kepala { gap: 10px; }
+  .kartu-ikon { width: 38px; height: 38px; flex-basis: 38px; font-size: 19px; border-radius: 12px; }
+  .kartu h2 { font-size: 19px; }
+  .kartu-sub { font-size: 13px; }
+}
+
+/* HP sangat kecil (320-350 px). */
+@media (max-width: 350px) {
+  .formulir { padding-left: 10px; padding-right: 10px; }
+  .kartu { padding: 16px 12px 6px; }
+  .kartu-nomor { display: none; }
+  .hero-merek { letter-spacing: .22em; }
+  .chip { padding: 9px 13px; font-size: 13.5px; }
+  .bar-kirim { gap: 8px; padding-left: 10px; padding-right: 10px; }
+  .bar-kirim .tombol { padding: 12px 14px; font-size: 14px; }
+  .bar-status { font-size: 11.5px; }
+}
+
+/* Tablet dan layar lebar. */
+@media (min-width: 700px) {
+  .hero { padding-top: 56px; padding-bottom: 78px; }
+  .kartu { padding: 26px 28px 14px; }
+  /* Isi bar bawah sejajar dengan lebar formulir. */
+  .bar-kirim {
+    padding-left: calc((100% - 608px) / 2);
+    padding-right: calc((100% - 608px) / 2);
+  }
+}
+
+/* HP mendatar: kepala halaman dibuat pendek supaya isian cepat terlihat. */
+@media (max-height: 480px) and (orientation: landscape) {
+  .hero { padding-top: 20px; padding-bottom: 52px; }
+  .hero-logo { width: 56px; height: 56px; border-radius: 16px; }
+  .hero-sapa { display: none; }
+}
 
 @keyframes muncul { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @keyframes naik { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }

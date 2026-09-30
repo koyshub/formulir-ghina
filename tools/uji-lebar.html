@@ -1,0 +1,50 @@
+<!doctype html>
+<!-- Uji responsif: buka formulir di beberapa lebar layar dan laporkan
+     elemen yang melebar keluar layar. Jalankan lewat server lokal. -->
+<meta charset="utf-8">
+<title>Uji lebar</title>
+<pre id="hasil">menguji…</pre>
+<div id="wadah"></div>
+<script>
+  const lebar = [320, 344, 360, 375, 390, 412, 430, 600, 768, 1024];
+  const baris = [];
+  let selesai = 0;
+  for (const w of lebar) {
+    const f = document.createElement('iframe');
+    f.width = w; f.height = 800; f.src = '/?wa=081234567890';
+    f.onload = () => setTimeout(() => {
+      const d = f.contentDocument;
+      const lebarDok = d.documentElement.scrollWidth;
+      const keluar = [...d.querySelectorAll('body *')].filter((el) => {
+        const r = el.getBoundingClientRect();
+        return r.width > 0 && (r.right > w + 0.5 || r.left < -0.5) &&
+          getComputedStyle(el).position !== 'fixed';
+      }).slice(0, 5).map((el) => el.tagName.toLowerCase() + '.' + (el.className || '') +
+        ' [' + Math.round(el.getBoundingClientRect().left) + '..' + Math.round(el.getBoundingClientRect().right) + ']');
+      // Isian berdampingan harus sejajar (atas kotak isian sama tinggi).
+      const miring = [];
+      d.querySelectorAll('.grid').forEach((g) => {
+        const setengah = [...g.querySelectorAll(':scope > .isian.setengah')];
+        for (let i = 0; i + 1 < setengah.length; i++) {
+          const a = setengah[i].querySelector('input'), b = setengah[i + 1].querySelector('input');
+          if (!a || !b) continue;
+          const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+          if (Math.abs(ra.top - rb.top) > 1 && Math.abs(ra.top - rb.top) < 60) {
+            miring.push(setengah[i].dataset.kunci + '/' + setengah[i + 1].dataset.kunci);
+          }
+        }
+      });
+      const tombol = d.getElementById('tombolSelesai').getBoundingClientRect();
+      baris.push({ w, ok: lebarDok <= w && keluar.length === 0 && tombol.right <= w,
+        lebarDok, keluar, miring, tombolKanan: Math.round(tombol.right) });
+      if (++selesai === lebar.length) {
+        baris.sort((a, b) => a.w - b.w);
+        document.getElementById('hasil').textContent = baris.map((b) =>
+          (b.ok ? 'OK  ' : 'SALAH ') + b.w + 'px  dok=' + b.lebarDok + '  tombol=' + b.tombolKanan +
+          (b.keluar.length ? '  keluar: ' + b.keluar.join(', ') : '') +
+          (b.miring.length ? '  tidak sejajar: ' + b.miring.join(', ') : '')).join('\n');
+      }
+    }, 1500);
+    document.getElementById('wadah').append(f);
+  }
+</script>

@@ -11,4 +11,5 @@
   const q = new URLSearchParams(location.search);
   document.getElementById('hp').src = '/' + (q.get('src') || '?wa=081298765432');
   document.getElementById('hp').height = q.get('h') || 2400;
+  document.getElementById('hp').width = q.get('w') || 390;
 </script>
