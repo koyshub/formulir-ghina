@@ -4,8 +4,8 @@
  * dipakai kalau link dibuka tanpa nomor.
  */
 window.CONFIG = {
-  // Nomor WhatsApp Ghina, format 62812xxxxxxx. Kosongkan = klien memilih
-  // sendiri kontak tujuannya di WhatsApp.
-  waGhina: '',
+  // Nomor WhatsApp GHINA MC (+62 856-9230-5579), format 62xxxxxxxxxx.
+  // Kosongkan = klien memilih sendiri kontak tujuannya di WhatsApp.
+  waGhina: '6285692305579',
   instagram: 'ghinadz_mc',
 };
