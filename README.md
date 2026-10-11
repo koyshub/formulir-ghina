@@ -2,10 +2,10 @@
 
 Halaman web untuk klien mengisi data akad & sungkeman. Setelah diisi:
 
-1. PDF dibuat langsung di HP klien (kop GHINA MC EVENTS, sama dengan PDF di aplikasi MC View).
-2. Klien menekan **Kirim PDF ke WhatsApp** → pilih WhatsApp → chat Ghina, PDF terlampir.
-   Cadangan: **Kirim sebagai pesan teks** langsung membuka chat Ghina berisi data.
-3. Di aplikasi MC View, PDF atau pesan teks itu dibagikan ke MC View
+1. Klien menekan **Selesai & Kirim**, lalu **Kirim ke WhatsApp**.
+2. WhatsApp terbuka di chat Ghina dengan pesan teks berisi semua data; klien tinggal ketuk Kirim.
+   (Kirim lewat PDF sudah dihapus atas permintaan Ghina: cukup pesan teks.)
+3. Di aplikasi MC View, pesan teks itu dibagikan ke MC View
    (tekan lama → Bagikan → MC View) atau dipilih dari menu **Formulir Klien**,
    lalu acara terbuat otomatis beserta biodatanya.
 
@@ -44,8 +44,9 @@ aplikasi selalu bisa membaca PDF dan teks dari formulir ini.
 
 - `index.html`, `css/gaya.css` — tampilan formulir.
 - `js/data.js` — daftar isian (kuncinya sama dengan biodata di aplikasi).
-- `js/pdf.js` — pembuat PDF (pdf-lib), termasuk data untuk impor aplikasi.
 - `js/teks.js` — pesan teks WhatsApp.
-- `js/app.js` — alur isi → PDF → kirim.
+- `js/app.js` — alur isi → kirim pesan teks.
+- `js/pdf.js`, `vendor/` (pdf-lib, fontkit, lisensi MIT), font Carlito di `aset/` —
+  pembuat PDF lama. Tidak dipakai halaman lagi; hanya untuk `tools/uji.js` supaya
+  aplikasi tetap bisa membaca PDF formulir yang pernah dikirim klien.
 - `aset/` — logo dan font Carlito (lisensi SIL OFL), sudah dipangkas ke huruf Latin.
-- `vendor/` — pdf-lib dan fontkit (lisensi MIT).

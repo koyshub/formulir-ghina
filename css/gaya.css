@@ -266,19 +266,6 @@ input:focus, textarea:focus {
 }
 .petunjuk-kecil { margin: -2px 0 6px; font-size: 13px; color: var(--redup); }
 
-.memuat {
-  position: fixed; inset: 0; z-index: 30;
-  display: flex; align-items: center; justify-content: center; gap: 12px;
-  background: rgba(255, 247, 249, .88);
-  font-weight: 800; color: var(--mawar-tua);
-}
-.memuat[hidden] { display: none; }
-.memuat span {
-  width: 26px; height: 26px; border-radius: 50%;
-  border: 3px solid #ffd1e4; border-top-color: var(--koral);
-  animation: putar .8s linear infinite;
-}
-
 .catatan-privasi { max-width: 640px; margin: 8px auto 0; padding: 0 20px; text-align: center; color: var(--redup); font-size: 12.5px; }
 
 /* ---------- Responsif ---------- */

@@ -1,4 +1,4 @@
-/* Tampilan dan alur formulir: isi -> PDF -> kirim ke WhatsApp. */
+/* Tampilan dan alur formulir: isi -> kirim ke WhatsApp sebagai pesan teks. */
 (function () {
   'use strict';
   const F = window.FORMULIR;
@@ -157,12 +157,6 @@
   perbaruiStatus();
 
   // ----- kirim --------------------------------------------------------------
-  let pdfTerakhir = null;
-  const namaPasangan = () => [data.bio.panggilan_cpw || data.bio.nama_cpw,
-    data.bio.panggilan_cpp || data.bio.nama_cpp].map((x) => (x || '').trim()).filter(Boolean).join(' & ');
-  const namaBerkas = () => ('List Akad & Sungkeman' + (namaPasangan() ? ' - ' + namaPasangan() : ''))
-    .replace(/[\\/:*?"<>|]/g, '-') + '.pdf';
-
   function periksa() {
     let pertama = null;
     for (const f of semuaWajib) {
@@ -180,36 +174,12 @@
     return true;
   }
 
-  async function asetPdf() {
-    const unduh = async (p) => new Uint8Array(await (await fetch(p)).arrayBuffer());
-    const [reguler, tebal, logo] = await Promise.all([
-      unduh('aset/Carlito-Regular.ttf'), unduh('aset/Carlito-Bold.ttf'), unduh('aset/logo-bulat.png'),
-    ]);
-    return { fontkit: window.fontkit, reguler, tebal, logo };
-  }
-
-  const memuat = document.getElementById('memuat');
   const lapisan = document.getElementById('lapisanSelesai');
 
-  document.getElementById('tombolSelesai').addEventListener('click', async () => {
-    if (!periksa()) return;
-    memuat.hidden = false;
-    try {
-      const sekarang = new Date();
-      data.diisi = sekarang.getDate() + ' ' + F.BULAN[sekarang.getMonth()] + ' ' + sekarang.getFullYear();
-      const bytes = await window.FORMULIR_PDF.buatPdf(data, await asetPdf());
-      pdfTerakhir = new File([bytes], namaBerkas(), { type: 'application/pdf' });
-      const bisaBagikan = !!(navigator.canShare && navigator.canShare({ files: [pdfTerakhir] }));
-      document.getElementById('petunjukBagikan').hidden = !bisaBagikan;
-      document.getElementById('teksSelesai').textContent = bisaBagikan
-        ? 'Data sudah jadi PDF. Tinggal kirim ke WhatsApp Ghina ya.'
-        : 'Data sudah jadi PDF. Tombol di bawah akan mengunduh PDF lalu membuka WhatsApp; lampirkan PDF-nya di chat ya.';
-      lapisan.hidden = false;
-    } catch (e) {
-      alert('Maaf, PDF belum berhasil dibuat. Coba lagi, atau kirim sebagai pesan teks.\n\n' + e);
-    } finally {
-      memuat.hidden = true;
-    }
+  // Data dikirim sebagai pesan teks WhatsApp saja (permintaan Ghina);
+  // aplikasi MC View membaca pesan ini kembali.
+  document.getElementById('tombolSelesai').addEventListener('click', () => {
+    if (periksa()) lapisan.hidden = false;
   });
 
   function bukaWa(teks) {
@@ -217,35 +187,9 @@
     window.open(url, '_blank', 'noopener');
   }
 
-  function unduh(file) {
-    const url = URL.createObjectURL(file);
-    const a = el('a', { href: url, download: file.name });
-    document.body.append(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
-  }
-
-  document.getElementById('tombolKirimPdf').addEventListener('click', async () => {
-    if (!pdfTerakhir) return;
-    const pesan = 'Assalamualaikum Kak Ghina, berikut data List Akad & Sungkeman'
-      + (namaPasangan() ? ' ' + namaPasangan() : '') + ' 🙏';
-    if (navigator.canShare && navigator.canShare({ files: [pdfTerakhir] })) {
-      try {
-        await navigator.share({ files: [pdfTerakhir], title: pdfTerakhir.name, text: pesan });
-        return;
-      } catch (e) {
-        if (e && e.name === 'AbortError') return; // batal memilih aplikasi
-      }
-    }
-    unduh(pdfTerakhir);
-    bukaWa(pesan + '\n(PDF sudah terunduh, saya lampirkan di chat ini.)');
-  });
-
   document.getElementById('tombolKirimTeks').addEventListener('click', () => {
     bukaWa(window.FORMULIR_TEKS.buatTeks(data));
   });
-  document.getElementById('tombolUnduh').addEventListener('click', () => pdfTerakhir && unduh(pdfTerakhir));
   document.getElementById('tombolUbah').addEventListener('click', () => { lapisan.hidden = true; });
   lapisan.addEventListener('click', (e) => { if (e.target === lapisan) lapisan.hidden = true; });
 })();
