@@ -6,9 +6,18 @@
  * aplikasi bisa langsung membuat acara dari PDF atau teks hasil formulir.
  * Kunci berawalan "acara." adalah data acara (tanggal, jam, lokasi, WA),
  * sisanya masuk ke biodata acara.
+ *
+ * `untuk` pada bagian atau isian = jenis acara yang menampilkannya
+ * (tanpa `untuk` = selalu tampil). Yang tersembunyi tidak ikut terkirim.
  */
 (function (root) {
   'use strict';
+
+  const JENIS = ['Akad Nikah', 'Akad & Resepsi Nikah', 'Resepsi Nikah', 'Lamaran'];
+  // Permintaan Ghina: bagian akad hanya untuk acara yang ada akadnya;
+  // speech sahabat/kerabat untuk acara yang ada resepsi/lamarannya.
+  const ADA_AKAD = ['Akad Nikah', 'Akad & Resepsi Nikah'];
+  const ADA_RESEPSI = ['Akad & Resepsi Nikah', 'Resepsi Nikah', 'Lamaran'];
 
   function mempelai(s) {
     const S = s.toUpperCase();
@@ -53,14 +62,13 @@
       keterangan: 'Kapan dan di mana akad nikah berlangsung.',
       isian: [
         { k: 'acara.jenis', label: 'Jenis acara', teks: 'Jenis acara',
-          jenis: 'pilihan', bawaan: 'Akad Nikah',
-          pilihan: ['Akad Nikah', 'Akad & Resepsi Nikah', 'Resepsi Nikah', 'Lamaran'] },
+          jenis: 'pilihan', bawaan: 'Akad Nikah', pilihan: JENIS },
         { k: 'acara.tanggal', label: 'Tanggal acara', teks: 'Tanggal acara',
           jenis: 'tanggal', wajib: true, lebar: 'setengah' },
         { k: 'acara.jam', label: 'Jam akad nikah', teks: 'Jam Akad nikah',
           jenis: 'jam', wajib: true, lebar: 'setengah' },
         { k: 'disandingkan', label: 'Akad disandingkan?', teks: 'Akad disandingkan',
-          jenis: 'yatidak' },
+          jenis: 'yatidak', untuk: ADA_AKAD },
         { k: 'acara.lokasi', label: 'Lokasi acara', teks: 'Lokasi acara', wajib: true,
           petunjuk: 'Nama gedung / rumah dan alamat singkat' },
         { k: 'maps', label: 'Link Google Maps lokasi', teks: 'Maps', jenis: 'url',
@@ -83,7 +91,7 @@
     },
     {
       id: 'perangkat', judul: 'Perangkat Nikah', ikon: '📜', teks: 'Perangkat Nikah',
-      keterangan: 'Kosongkan yang belum diketahui.',
+      keterangan: 'Kosongkan yang belum diketahui.', untuk: ADA_AKAD,
       isian: [
         { k: 'wali', label: 'Wali nikah', teks: 'Wali Nikah' },
         { k: 'saksi_cpw', label: 'Saksi CPW', teks: 'Saksi CPW', lebar: 'setengah' },
@@ -96,12 +104,14 @@
       id: 'pengisi', judul: 'Pengisi Acara', ikon: '🎤', teks: 'Pengisi Acara',
       keterangan: 'Kosongkan yang belum diketahui.',
       isian: [
-        { k: 'qori', label: 'Qori', teks: 'Qori' },
+        { k: 'qori', label: 'Qori', teks: 'Qori', untuk: ADA_AKAD },
         { k: 'jubir_cpw', label: 'Perwakilan sambutan keluarga CPW',
           teks: 'Perwakilan Sambutan CPW' },
         { k: 'jubir_cpp', label: 'Perwakilan sambutan keluarga CPP',
           teks: 'Perwakilan Sambutan CPP' },
         { k: 'nasihat', label: 'Nasihat pernikahan', teks: 'Nasihat Pernikahan' },
+        { k: 'sahabat', label: 'Speech perwakilan sahabat / kerabat',
+          teks: 'Speech Sahabat/Kerabat', untuk: ADA_RESEPSI },
       ],
     },
     {
@@ -149,6 +159,12 @@
       .replace(/^@/, '');
   }
 
-  root.FORMULIR = { BAGIAN, BULAN, tanggalPanjang, jamTitik, ambil, akunIg, versi: 1 };
+  /** Bagian/isian [x] tampil untuk jenis acara yang dipilih di [data]? */
+  function tampil(data, x) {
+    const jenis = ((data.acara || {}).jenis || '').trim() || JENIS[0];
+    return !x.untuk || x.untuk.includes(jenis);
+  }
+
+  root.FORMULIR = { BAGIAN, BULAN, tanggalPanjang, jamTitik, ambil, akunIg, tampil, versi: 1 };
   if (typeof module !== 'undefined') module.exports = root.FORMULIR;
 })(typeof window !== 'undefined' ? window : globalThis);

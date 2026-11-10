@@ -199,6 +199,8 @@ input:focus, textarea:focus {
 .chip.kecil { padding: 6px 12px; min-height: 36px; font-size: 13px; }
 .sambung { margin-top: 10px; padding-left: 14px; border-left: 3px solid #ffd3e6; }
 .sambung[hidden] { display: none; }
+/* Bagian/isian yang tidak berlaku untuk jenis acara terpilih. */
+.kartu[hidden], .isian[hidden] { display: none; }
 
 /* ---------- Bar kirim ---------- */
 .bar-kirim {

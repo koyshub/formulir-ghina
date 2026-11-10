@@ -40,7 +40,7 @@ const contoh = {
     wali: 'Bp Karnadi', saksi_cpw: 'Bp Asli', saksi_cpp: 'Bp Ahmad Fauzi',
     penghulu: 'Bp Khaerudin, S.Ag', kua: 'Cisauk',
     qori: 'Ust Mistam', jubir_cpw: 'Bp Odih', jubir_cpp: 'Bp Lukman',
-    nasihat: 'KH. Abdul Rozak 😊',
+    nasihat: 'KH. Abdul Rozak 😊', sahabat: 'Rizky (sahabat CPP)',
     dekorasi: 'Nd Decoration', mua: 'Iniwinibeauty', dokumentasi: 'Magenta photograph.id',
     hiburan: 'Bosscoustic', henna: 'Henna by Rara', seserahan: '', wcc: 'Semaya Moment',
     wo: 'Semaya WO', catering: 'Dapur Ibu',

@@ -239,7 +239,8 @@
       [{ teks: 'Jenis Acara' }, { teks: nilai('acara.jenis') }],
       [{ teks: 'Tanggal' }, { teks: F.tanggalPanjang(nilai('acara.tanggal')) }],
       [{ teks: 'Jam Akad Nikah' }, { teks: F.jamTitik(nilai('acara.jam')) }],
-      [{ teks: 'Akad Disandingkan' }, { teks: ya(nilai('disandingkan')) }],
+      ...(F.tampil(data, F.BAGIAN[0].isian.find((f) => f.k === 'disandingkan'))
+        ? [[{ teks: 'Akad Disandingkan' }, { teks: ya(nilai('disandingkan')) }]] : []),
       [{ teks: 'Lokasi' }, { teks: nilai('acara.lokasi') }],
       [{ teks: 'Google Maps' }, { teks: maps, url: /^https?:\/\//i.test(maps) ? maps : undefined }],
       [{ teks: 'WhatsApp' }, { teks: nilai('acara.wa') }],
@@ -291,8 +292,11 @@
     ]);
 
     const daftar = (id) => F.BAGIAN.find((x) => x.id === id).isian
+      .filter((f) => F.tampil(data, f))
       .map((f) => [{ teks: f.teks }, { teks: nilai(f.k) }]);
-    bagian('PERANGKAT NIKAH', U.kolom2, daftar('perangkat'));
+    if (F.tampil(data, F.BAGIAN.find((x) => x.id === 'perangkat'))) {
+      bagian('PERANGKAT NIKAH', U.kolom2, daftar('perangkat'));
+    }
     bagian('PENGISI ACARA', U.kolom2, daftar('pengisi'));
     bagian('VENDOR', U.kolom2, daftar('vendor'));
 

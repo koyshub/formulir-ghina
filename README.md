@@ -43,7 +43,9 @@ aplikasi selalu bisa membaca PDF dan teks dari formulir ini.
 ## Isi folder
 
 - `index.html`, `css/gaya.css` — tampilan formulir.
-- `js/data.js` — daftar isian (kuncinya sama dengan biodata di aplikasi).
+- `js/data.js` — daftar isian (kuncinya sama dengan biodata di aplikasi), termasuk
+  jenis acara mana yang menampilkannya (`untuk`): bagian akad & Perangkat Nikah hanya
+  untuk Akad Nikah / Akad & Resepsi, speech sahabat untuk acara yang ada resepsi/lamarannya.
 - `js/teks.js` — pesan teks WhatsApp.
 - `js/app.js` — alur isi → kirim pesan teks.
 - `js/pdf.js`, `vendor/` (pdf-lib, fontkit, lisensi MIT), font Carlito di `aset/` —

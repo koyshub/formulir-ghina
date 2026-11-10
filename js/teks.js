@@ -30,8 +30,11 @@
       '┗━━━━━━━━━━•••••••••••••••••••',
     ];
     for (const b of F.BAGIAN) {
+      // Bagian/isian yang tidak berlaku untuk jenis acara ini tidak dikirim.
+      if (!F.tampil(data, b)) continue;
       baris.push('', '*' + b.teks + '*');
       for (const f of b.isian) {
+        if (!F.tampil(data, f)) continue;
         baris.push(f.teks + ' : ' + nilaiTeks(data, f));
         if (f.sambung) {
           const s = ((data.bio || {})[f.sambung] || '').trim();

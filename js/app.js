@@ -38,8 +38,28 @@
   function atur(k, v) {
     if (k.startsWith('acara.')) data.acara[k.slice(6)] = v;
     else data.bio[k] = v;
+    if (k === 'acara.jenis') terapkanJenis();
     simpan();
   }
+
+  // Bagian/isian yang tidak berlaku untuk jenis acara terpilih disembunyikan.
+  // Isinya tetap disimpan (kalau jenisnya diganti balik), tapi tidak dikirim.
+  function terapkanJenis() {
+    let n = 0;
+    const tampak = F.BAGIAN.filter((b) => F.tampil(data, b));
+    for (const b of F.BAGIAN) {
+      const kartu = document.getElementById('bagian-' + b.id);
+      if (!kartu) continue; // halaman belum selesai disusun
+      kartu.hidden = !F.tampil(data, b);
+      if (!kartu.hidden) kartu.querySelector('.kartu-nomor').textContent = (++n) + '/' + tampak.length;
+      for (const f of b.isian) {
+        const kotak = kartu.querySelector(`[data-kunci="${f.k}"]`);
+        if (kotak) kotak.hidden = !F.tampil(data, f);
+      }
+    }
+  }
+  const isianTampak = () => F.BAGIAN.filter((b) => F.tampil(data, b))
+    .flatMap((b) => b.isian.filter((f) => F.tampil(data, f)));
 
   // ----- membuat elemen -----------------------------------------------------
   function el(tag, atribut, ...anak) {
@@ -137,6 +157,7 @@
         el('span', { class: 'kartu-nomor', text: (i + 1) + '/' + F.BAGIAN.length })),
       grid));
   });
+  terapkanJenis();
   if (window.CONFIG && window.CONFIG.instagram) {
     const ig = document.getElementById('tautanIg');
     ig.href = 'https://instagram.com/' + window.CONFIG.instagram;
@@ -144,9 +165,9 @@
   }
 
   // ----- status pengisian ---------------------------------------------------
-  const semuaWajib = F.BAGIAN.flatMap((b) => b.isian.filter((f) => f.wajib));
   function perbaruiStatus() {
-    const semua = F.BAGIAN.flatMap((b) => b.isian);
+    const semua = isianTampak();
+    const semuaWajib = semua.filter((f) => f.wajib);
     const terisi = semua.filter((f) => ambil(f.k).trim()).length;
     const wajibTerisi = semuaWajib.filter((f) => ambil(f.k).trim()).length;
     document.getElementById('barIsi').style.width = Math.round((terisi / semua.length) * 100) + '%';
@@ -159,7 +180,7 @@
   // ----- kirim --------------------------------------------------------------
   function periksa() {
     let pertama = null;
-    for (const f of semuaWajib) {
+    for (const f of isianTampak().filter((x) => x.wajib)) {
       const kotak = wadah.querySelector(`[data-kunci="${f.k}"]`);
       const kosong = !ambil(f.k).trim();
       kotak.classList.toggle('salah', kosong);
